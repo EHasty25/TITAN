@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TITAN — Talent Intelligence and Assignment Network | Concept Document</title>
+<style>
+:root {
+  --navy: #0A1628;
+  --navy-mid: #152340;
+  --navy-light: #1E3A5F;
+  --gold: #C8A951;
+  --gold-light: #E8D080;
+  --gold-pale: #FBF5E0;
+  --white: #FFFFFF;
+  --gray-50: #F8F9FB;
+  --gray-100: #F1F3F7;
+  --gray-200: #E2E6EF;
+  --gray-400: #9AA3B5;
+  --gray-600: #4B5568;
+  --gray-800: #1F2937;
+  --blue: #2563EB;
+  --blue-light: #EFF6FF;
+  --green: #16A34A;
+  --green-light: #F0FDF4;
+  --red: #DC2626;
+  --red-light: #FEF2F2;
+  --orange: #EA580C;
+  --orange-light: #FFF7ED;
+  --purple: #7C3AED;
+  --purple-light: #F5F3FF;
+  --teal: #0F766E;
+  --teal-light: #F0FDFA;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--gray-50); color: var(--gray-800); line-height: 1.6; }
+
+/* NAV */
+#sidebar {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: var(--navy); overflow-y: auto; z-index: 100;
+  display: flex; flex-direction: column;
+}
+#sidebar .brand {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid rgba(200,169,81,0.25);
+}
+#sidebar .brand-title { color: var(--gold); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+#sidebar .brand-sub { color: rgba(255,255,255,0.45); font-size: 10px; margin-top: 2px; }
+#sidebar nav { padding: 12px 0; flex: 1; }
+#sidebar nav a {
+  display: block; padding: 7px 18px; color: rgba(255,255,255,0.65);
+  text-decoration: none; font-size: 12px; border-left: 2px solid transparent;
+  transition: all .15s;
+}
+#sidebar nav a:hover { color: #fff; background: rgba(255,255,255,0.06); }
+#sidebar nav a.active { color: var(--gold); border-left-color: var(--gold); background: rgba(200,169,81,0.08); }
+#sidebar nav .nav-section { padding: 14px 18px 4px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: rgba(255,255,255,0.3); }
+#sidebar .classification {
+  padding: 10px 18px; border-top: 1px solid rgba(200,169,81,0.2);
+  font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: .06em;
+}
+
+/* MAIN */
+#main { margin-left: 240px; }
+
+/* HERO */
+#hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  padding: 80px 64px 64px;
+  position: relative; overflow: hidden;
+}
+#hero::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(200,169,81,0.03) 40px, rgba(200,169,81,0.03) 41px);
+}
+.hero-label { color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 16px; position: relative; }
+.hero-title { color: #fff; font-size: 42px; font-weight: 700; line-height: 1.1; margin-bottom: 8px; position: relative; }
+.hero-title span { color: var(--gold); }
+.hero-sub { color: rgba(255,255,255,0.6); font-size: 16px; margin-bottom: 32px; max-width: 600px; position: relative; }
+.hero-badges { display: flex; gap: 10px; flex-wrap: wrap; position: relative; }
+.hero-badge {
+  padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  border: 1px solid;
+}
+.hb-gold { border-color: var(--gold); color: var(--gold); }
+.hb-white { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); }
+.hero-meta { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 40px; flex-wrap: wrap; position: relative; }
+.hero-stat .num { color: var(--gold); font-size: 28px; font-weight: 700; }
+.hero-stat .lbl { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 2px; }
+
+/* SECTIONS */
+section { padding: 64px; border-bottom: 1px solid var(--gray-200); background: #fff; }
+section:nth-child(even) { background: var(--gray-50); }
+.section-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--gold); margin-bottom: 8px; }
+.section-title { font-size: 28px; font-weight: 700; color: var(--navy); margin-bottom: 12px; line-height: 1.2; }
+.section-lead { font-size: 16px; color: var(--gray-600); max-width: 760px; margin-bottom: 40px; line-height: 1.7; }
+
+/* CARDS */
+.card-grid { display: grid; gap: 16px; }
+.cg-2 { grid-template-columns: repeat(2, 1fr); }
+.cg-3 { grid-template-columns: repeat(3, 1fr); }
+.cg-4 { grid-template-columns: repeat(4, 1fr); }
+.card {
+  background: #fff; border: 1px solid var(--gray-200); border-radius: 12px;
+  padding: 20px 22px;
+}
+.card.navy { background: var(--navy); border-color: var(--navy); }
+.card.gold-border { border-color: var(--gold); border-width: 2px; }
+.card-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; font-size: 16px; }
+.card-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.card.navy .card-title { color: var(--gold); }
+.card-body { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
+.card.navy .card-body { color: rgba(255,255,255,0.65); }
+
+/* PROBLEM STATS */
+.problem-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin: 32px 0; }
+.pstat { background: var(--red-light); border: 1px solid #fca5a5; border-radius: 10px; padding: 16px 18px; }
+.pstat .num { font-size: 32px; font-weight: 700; color: var(--red); line-height: 1; }
+.pstat .label { font-size: 11px; color: #7f1d1d; margin-top: 4px; line-height: 1.4; }
+
+/* DOMAIN BLOCKS */
+.domain-block { border-radius: 12px; padding: 28px 30px; margin-bottom: 20px; border-left: 4px solid; }
+.db-d1 { background: #EFF6FF; border-color: var(--blue); }
+.db-d2 { background: var(--green-light); border-color: var(--green); }
+.db-d3 { background: var(--purple-light); border-color: var(--purple); }
+.db-d4 { background: var(--orange-light); border-color: var(--orange); }
+.db-d5 { background: var(--teal-light); border-color: var(--teal); }
+.db-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+.db-num { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+.n-d1 { background: var(--blue); color: #fff; }
+.n-d2 { background: var(--green); color: #fff; }
+.n-d3 { background: var(--purple); color: #fff; }
+.n-d4 { background: var(--orange); color: #fff; }
+.n-d5 { background: var(--teal); color: #fff; }
+.db-name { font-size: 18px; font-weight: 700; color: var(--navy); }
+.db-desc { font-size: 13px; color: var(--gray-600); margin-top: 2px; }
+.cap-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cap-item { display: flex; gap: 10px; align-items: flex-start; }
+.cap-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+.cap-text { font-size: 13px; color: var(--gray-700, #374151); line-height: 1.55; }
+.replaces { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.08); }
+.replaces-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--gray-400); margin-bottom: 6px; }
+.replace-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.rbadge { font-size: 11px; padding: 2px 8px; background: #fff; border: 1px solid rgba(220,38,38,0.3); color: var(--red); border-radius: 4px; }
+
+/* ONTOLOGY TABLE */
+.onto-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.onto-table th { background: var(--navy); color: #fff; padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.onto-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+.onto-table tr:nth-child(even) td { background: var(--gray-50); }
+.onto-table .obj-name { font-weight: 700; color: var(--navy); }
+.onto-table .obj-src { font-size: 11px; color: var(--gray-400); }
+.field-list { display: flex; flex-wrap: wrap; gap: 4px; }
+.field-tag { font-size: 10px; padding: 1px 7px; background: var(--blue-light); color: var(--blue); border-radius: 3px; border: 1px solid #bfdbfe; }
+.field-tag.auth { background: var(--green-light); color: var(--green); border-color: #bbf7d0; }
+.field-tag.new { background: var(--purple-light); color: var(--purple); border-color: #ddd6fe; }
+
+/* PERSONA TABS */
+.persona-nav { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.ptab { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--gray-200); background: #fff; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--gray-600); transition: all .15s; }
+.ptab.active { background: var(--navy); color: var(--gold); border-color: var(--navy); }
+.persona-view { display: none; }
+.persona-view.active { display: block; }
+.pv-header { display: flex; gap: 20px; align-items: flex-start; padding: 24px; background: var(--navy); border-radius: 12px 12px 0 0; }
+.pv-avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(200,169,81,0.2); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: var(--gold); flex-shrink: 0; }
+.pv-name { color: #fff; font-size: 18px; font-weight: 700; }
+.pv-role { color: var(--gold); font-size: 12px; margin-top: 2px; }
+.pv-body { border: 1px solid var(--gray-200); border-top: none; border-radius: 0 0 12px 12px; padding: 24px; background: #fff; }
+.pv-section { margin-bottom: 20px; }
+.pv-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--gray-400); margin-bottom: 10px; }
+.screen-mock { background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 8px; padding: 16px; margin-top: 8px; }
+.mock-bar { background: var(--navy); border-radius: 6px 6px 0 0; padding: 8px 12px; display: flex; align-items: center; gap: 8px; margin: -16px -16px 12px; }
+.mock-dot { width: 8px; height: 8px; border-radius: 50%; }
+.mock-widgets { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.mock-widget { background: #fff; border: 1px solid var(--gray-200); border-radius: 6px; padding: 10px 12px; }
+.mock-widget .mw-num { font-size: 20px; font-weight: 700; color: var(--navy); }
+.mock-widget .mw-label { font-size: 10px; color: var(--gray-400); margin-top: 1px; }
+.mock-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.mock-row { background: #fff; border: 1px solid var(--gray-200); border-radius: 6px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+.status-pill { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+.sp-green { background: var(--green-light); color: var(--green); }
+.sp-amber { background: #FEF3C7; color: #D97706; }
+.sp-red { background: var(--red-light); color: var(--red); }
+.sp-blue { background: var(--blue-light); color: var(--blue); }
+
+/* ROI */
+.roi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 32px; }
+.roi-card { border-radius: 12px; padding: 20px 22px; }
+.roi-card.green { background: var(--green-light); border: 1px solid #86efac; }
+.roi-card.blue { background: var(--blue-light); border: 1px solid #93c5fd; }
+.roi-card.purple { background: var(--purple-light); border: 1px solid #c4b5fd; }
+.roi-card.gold { background: var(--gold-pale); border: 1px solid #e8c96b; }
+.roi-num { font-size: 32px; font-weight: 700; color: var(--navy); }
+.roi-period { font-size: 12px; color: var(--gray-600); margin-top: 2px; }
+.roi-label { font-size: 13px; color: var(--gray-600); margin-top: 8px; line-height: 1.5; }
+.roi-detail { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+
+/* CONSTRAINT TABLE */
+.constraint-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.constraint-table th { background: var(--navy); color: #fff; padding: 10px 14px; text-align: left; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+.constraint-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+.constraint-table tr:hover td { background: var(--gray-50); }
+.sev-high { color: var(--red); font-weight: 700; font-size: 11px; }
+.sev-med { color: var(--orange); font-weight: 700; font-size: 11px; }
+.sev-low { color: var(--green); font-weight: 700; font-size: 11px; }
+
+/* APPS */
+.app-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.app-card { border: 1px solid var(--gray-200); border-radius: 10px; padding: 18px 20px; background: #fff; }
+.app-card:hover { border-color: var(--gold); box-shadow: 0 2px 12px rgba(200,169,81,0.15); }
+.app-num { font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: .06em; margin-bottom: 6px; }
+.app-name { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.app-desc { font-size: 12px; color: var(--gray-600); line-height: 1.55; }
+.app-users { margin-top: 10px; display: flex; gap: 4px; flex-wrap: wrap; }
+.au-tag { font-size: 10px; padding: 1px 7px; background: var(--navy); color: var(--gold); border-radius: 3px; }
+
+/* ROADMAP */
+.roadmap { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; }
+.rm-phase { padding: 20px; border-right: 1px solid var(--gray-200); }
+.rm-phase:last-child { border-right: none; }
+.rm-phase-num { width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: var(--gold); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.rm-phase-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.rm-phase-time { font-size: 11px; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
+.rm-items { display: flex; flex-direction: column; gap: 6px; }
+.rm-item { font-size: 11px; color: var(--gray-600); padding-left: 10px; border-left: 2px solid var(--gray-200); line-height: 1.45; }
+
+/* HRDP ALIGNMENT */
+.hrdp-phase { display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: start; margin-bottom: 14px; }
+.hrdp-pill { padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; }
+.hp-guidance { background: #FEF3C7; color: #92400E; }
+.hp-planning { background: var(--purple-light); color: #4C1D95; }
+.hp-production { background: var(--green-light); color: #14532D; }
+.hp-assignment { background: var(--orange-light); color: #7C2D12; }
+.hp-assessment { background: var(--blue-light); color: #1E3A8A; }
+.hrdp-content { display: flex; flex-wrap: wrap; gap: 6px; }
+.hc-tag { font-size: 11px; padding: 3px 10px; border-radius: 5px; border: 1px solid; }
+.hc-ok { background: var(--green-light); border-color: #86efac; color: #166534; }
+.hc-adj { background: var(--orange-light); border-color: #fed7aa; color: #7c2d12; }
+.hc-new { background: var(--purple-light); border-color: #c4b5fd; color: #4c1d95; }
+
+/* QUOTE */
+.quote { background: var(--navy); border-radius: 12px; padding: 24px 28px; margin: 24px 0; }
+.quote-text { color: rgba(255,255,255,0.85); font-size: 15px; font-style: italic; line-height: 1.7; }
+.quote-attr { color: var(--gold); font-size: 12px; margin-top: 10px; }
+
+/* PRINCIPLE BOX */
+.principle-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.principle { padding: 16px 18px; border-radius: 8px; border-left: 3px solid var(--gold); background: var(--gold-pale); }
+.principle-title { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.principle-body { font-size: 12px; color: var(--gray-600); line-height: 1.5; }
+
+/* FOOTER */
+footer { background: var(--navy); color: rgba(255,255,255,0.4); font-size: 11px; padding: 24px 64px; margin-left: 0; }
+
+/* UTILITY */
+.mt8 { margin-top: 8px; }
+.mt16 { margin-top: 16px; }
+.mt24 { margin-top: 24px; }
+.mt32 { margin-top: 32px; }
+.mb16 { margin-bottom: 16px; }
+.divider { height: 1px; background: var(--gray-200); margin: 32px 0; }
+.highlight-box { background: var(--gold-pale); border: 1px solid var(--gold); border-radius: 10px; padding: 16px 20px; margin: 20px 0; font-size: 13px; color: var(--navy); line-height: 1.6; }
+.highlight-box strong { color: var(--navy); font-weight: 700; }
+.tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: var(--gray-100); color: var(--gray-600); border: 1px solid var(--gray-200); }
+
+@media(max-width:900px){
+  #sidebar{display:none;}
+  #main{margin-left:0;}
+  section{padding:40px 24px;}
+  .cg-3,.cg-4,.roi-grid,.app-grid,.roadmap,.principle-grid{grid-template-columns:1fr;}
+  .cg-2{grid-template-columns:1fr;}
+  .problem-grid{grid-template-columns:repeat(2,1fr);}
+  .onto-table{font-size:11px;}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="brand">
+    <div class="brand-title">TITAN</div>
+    <div class="brand-sub">Talent Intelligence and Assignment Network</div>
+  </div>
+  <nav>
+    <div class="nav-section">Overview</div>
+    <a href="#exec-summary">Executive Summary</a>
+    <a href="#problem">The Problem</a>
+    <a href="#solution">Solution Overview</a>
+    <div class="nav-section">Architecture</div>
+    <a href="#ontology">Data Ontology</a>
+    <a href="#domains">Five Domains</a>
+    <a href="#hrdp">HRDP Alignment</a>
+    <a href="#governance">Governance &amp; Access</a>
+    <div class="nav-section">Operational</div>
+    <a href="#personas">Persona Views</a>
+    <a href="#constraints">Data Constraints</a>
+    <div class="nav-section">Strategic</div>
+    <a href="#applications">Platform Applications</a>
+    <a href="#roi">ROI &amp; Business Case</a>
+    <a href="#roadmap">Implementation Roadmap</a>
+    <div class="nav-section">Governance</div>
+    <a href="#principles">Guiding Principles</a>
+    <a href="#replacements">Systems Replaced</a>
+  </nav>
+  <div class="classification">UNCLASSIFIED // FOR OFFICIAL USE ONLY</div>
+</div>
+
+<div id="main">
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-label">Palantir × USMC M&amp;RA — Concept Document v0.1</div>
+  <h1 class="hero-title">TITAN<br><span>Talent Intelligence and Assignment Network</span></h1>
+  <p class="hero-sub">Talent intelligence, not just talent management. One integration layer connecting 15+ fragmented systems to a single authoritative record — turning manpower data into decision advantage for commanders, monitors, analysts, and Marines alike.</p>
+  <div class="hero-badges">
+    <span class="hero-badge hb-gold">HRDP-Compliant</span>
+    <span class="hero-badge hb-white">Palantir Foundry + AIP</span>
+    <span class="hero-badge hb-white">IL5 (CUI) / IL6 (Secret) Ready</span>
+    <span class="hero-badge hb-white">Unifies 15+ Systems</span>
+    <span class="hero-badge hb-white">Active + Reserve Component</span>
+  </div>
+  <div class="hero-meta">
+    <div class="hero-stat"><div class="num">15+</div><div class="lbl">Fragmented systems unified</div></div>
+    <div class="hero-stat"><div class="num">$31M+</div><div class="lbl">Projected annual value</div></div>
+    <div class="hero-stat"><div class="num">204K</div><div class="lbl">Marines served (Total Force)</div></div>
+    <div class="hero-stat"><div class="num">5</div><div class="lbl">HRDP phases enabled</div></div>
+    <div class="hero-stat"><div class="num">Real-time</div><div class="lbl">vs. batch-cycle data today</div></div>
+  </div>
+</div>
+
+<!-- EXEC SUMMARY -->
+<section id="exec-summary">
+  <div class="section-eyebrow">Executive Summary</div>
+  <h2 class="section-title">Three audiences. One platform. One decision.</h2>
+  <p class="section-lead">TITAN is the Marine Corps' missing institutional capability — a Talent Intelligence platform that transforms fragmented manpower data into decision advantage. The root problem is not that MCTFS is wrong; it is that nothing connects back to it. Talent management is not a system — it is a <em>capability</em> TITAN enables. TITAN is the connective tissue that was never built.</p>
+
+  <div class="card-grid cg-3">
+    <div class="card gold-border">
+      <div class="card-icon" style="background:#FBF5E0;">🎖</div>
+      <div class="card-title">For Senior Leaders</div>
+      <div class="card-body">Real-time readiness visibility from fire team to CMC. Merit-based talent decisions replacing submission-timestamp assignments. Predictive retention intelligence before Marines decide to leave. Memo-01 and GAR outputs generated from live data, not manual pulls. TITAN makes the HRDP work the way the Commandant's TM guidance says it should.</div>
+    </div>
+    <div class="card gold-border">
+      <div class="card-icon" style="background:#EFF6FF;">📊</div>
+      <div class="card-title">For Analysts &amp; ORSAs</div>
+      <div class="card-body">A unified analytical surface over live talent data — no SAAR queues, no extract lags, no reconciling competing spreadsheets. Palantir Foundry provides the ontology and integration layer; AIP enables workflow automation and decision support. Analysts and ORSAs use TITAN to produce the rigorous, decision-relevant intelligence the Marine Corps has always needed but never had the data infrastructure to support.</div>
+    </div>
+    <div class="card gold-border">
+      <div class="card-icon" style="background:#F0FDF4;">🪖</div>
+      <div class="card-title">For Marines</div>
+      <div class="card-body">For the first time, Marines can see available billets, track their package status, express career preferences that actually count, and understand what their career trajectory looks like — all in one place. TITAN replaces the opacity that drives separation with the transparency the HRDP mandates.</div>
+    </div>
+  </div>
+
+  <div class="highlight-box mt24">
+    <strong>The core problem in one sentence:</strong> The Marine Corps cannot execute merit-based talent management not because MCTFS is wrong, but because nothing connects back to it. Every downstream system that should feed MCTFS — performance records, billet structures, retention actions, planning models — operates in isolation. TITAN is the connective tissue the HRDP mandates but has never had.
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="section-eyebrow">Problem Definition</div>
+  <h2 class="section-title">The data architecture makes good talent decisions structurally impossible.</h2>
+  <p class="section-lead">This is not a training problem, a motivation problem, or a personnel quality problem. The people are excellent. The structure fails them. Across every division and grade band, the same five systemic failures surface repeatedly — fragmented systems, stale data, zero Marine visibility, and manual workflows that block the merit-based decisions the HRDP already mandates.</p>
+
+
+
+  <div class="card-grid cg-2 mt16">
+    <div class="card">
+      <div class="card-title">What the field consistently reports</div>
+      <div class="card-body">
+        <p style="margin-bottom:8px">Across every M&amp;RA division and grade band, five systemic failures surface with near-perfect consistency:</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13px;color:#4B5568">
+          <li style="padding-left:12px;border-left:2px solid #EF4444">Too many systems that don't communicate — MCTFS, MOL, TFRS, TFSMS, ORMA, JEPES, Cognos, ETMS, 3270, WebMASS, Drill Manager, DBR, MCRISS and more</li>
+          <li style="padding-left:12px;border-left:2px solid #EF4444">Data is always stale — diary entry batch cycles, monthly Excel pulls, no real-time picture</li>
+          <li style="padding-left:12px;border-left:2px solid #EF4444">No "whole Marine" view — monitors open 10+ tabs to assemble one Marine's profile</li>
+          <li style="padding-left:12px;border-left:2px solid #F97316">Manual workflows that are obviously automatable but blocked by policy or access restrictions</li>
+          <li style="padding-left:12px;border-left:2px solid #F97316">Marines have zero visibility into the process that controls their careers</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">The no-fail missions this degrades</div>
+      <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+        <div style="padding:10px 12px;background:#FEF2F2;border-radius:8px;font-size:13px"><strong style="color:#991B1B">Assignments:</strong> Monitors execute against 6-week-old data. Billets defund between order-writing and execution. "First in time, first in line" replaces merit.</div>
+        <div style="padding:10px 12px;background:#FEF2F2;border-radius:8px;font-size:13px"><strong style="color:#991B1B">Reenlistments:</strong> Marines reenlisting can't see their options. Career counselors lack predictive risk data. Retention is reactive, not proactive.</div>
+        <div style="padding:10px 12px;background:#FFF7ED;border-radius:8px;font-size:13px"><strong style="color:#7C2D12">FYDP Planning:</strong> Planners model against Cognos extracts 2+ weeks old. No scenario engine. GAR modeling is manual Excel work.</div>
+        <div style="padding:10px 12px;background:#FFF7ED;border-radius:8px;font-size:13px"><strong style="color:#7C2D12">Accessions:</strong> STF pipeline visibility is fragmented across MCRC, TECOM, and M&amp;RA with no unified production picture.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote mt24">
+    <div class="quote-text">"Our databases are not where they need to be to support ML/AI tools. Don't focus on the shiny object — focus on the thing that will enable it. The underlying pay and personnel database is what has to be fixed first."</div>
+    <div class="quote-attr">— End Strength Planner, MPP-20, O-4</div>
+  </div>
+  <div class="quote">
+    <div class="quote-text">"If Microsoft Excel suddenly ceased to function, the Marine Corps would be unable to function. That is not a technology problem — that is an institutional failure."</div>
+    <div class="quote-attr">— Assistant Retention Chief, MMEA, E-7</div>
+  </div>
+</section>
+
+<!-- SOLUTION OVERVIEW -->
+<section id="solution">
+  <div class="section-eyebrow">Solution Overview</div>
+  <h2 class="section-title">TITAN — five integrated domains, one source of truth.</h2>
+  <p class="section-lead">TITAN is not a MCTFS replacement. The root problem is not that MCTFS is wrong — it is that nothing connects back to it. TITAN is the connective tissue: a Talent Intelligence platform that reads from MCTFS, integrates the downstream systems that should be feeding it, and surfaces a unified picture to every user who needs it. Talent management is a <em>capability</em> this platform enables. Five integrated domains share one data model and one access layer, turning isolated data into institutional decision advantage.</p>
+
+  <div class="card-grid cg-3 mt16">
+    <div class="card" style="border-top:3px solid #C8A951">
+      <div class="card-title">Governing Architecture Principle</div>
+      <div class="card-body">Every domain reads from a single data model anchored to MCTFS. Policy documents — DoD directives, SecNavInsts, MCOs, MARADMINs — are ingested and semantically indexed, surfacing policy context at the point of every decision. A reenlistment action updates the Marine's record, billet fill status, retention inventory, and readiness dashboard simultaneously — no ETL lag, no manual reconciliation.</div>
+    </div>
+    <div class="card" style="border-top:3px solid #C8A951">
+      <div class="card-title">MCTFS Relationship</div>
+      <div class="card-body">Phase 1: Palantir Foundry establishes a read-only pipeline from MCTFS — zero writes, zero risk to pay records. MCTFS remains authoritative; TITAN connects everything that currently fails to communicate with it. Over time, as institutional confidence builds, the platform may absorb MCTFS functions domain by domain. The immediate mandate is connectivity and intelligence — not replacement.</div>
+    </div>
+    <div class="card" style="border-top:3px solid #C8A951">
+      <div class="card-title">Classification &amp; Access</div>
+      <div class="card-body">TITAN operates at IL5 (CUI — Controlled Unclassified Information) with a NIPR interface for unclassified Marine self-service functions. Classified activities requiring Secret access operate at IL6. Role-based access control is enforced at the data object level — not the system level. A monitor sees their assigned population. A Marine sees their own record and eligible billets. A commander sees their unit. The CMC sees the Total Force.</div>
+    </div>
+  </div>
+  <div class="highlight-box mt24">
+    <strong>Talent Intelligence, not just Talent Management:</strong> TITAN applies an intelligence discipline to personnel decisions. <strong>Descriptive</strong> analytics answer "what is the current inventory state?" <strong>Diagnostic</strong> analytics ask "why is retention declining in 0311?" <strong>Predictive</strong> analytics forecast "which Marines are likely to separate in the next 12 months?" <strong>Prescriptive</strong> analytics recommend "here are the specific interventions most likely to retain this Marine." This four-layer stack separates talent intelligence from traditional HR administration — and it is what the HRDP's assessment framework has always pointed toward but never had the data infrastructure to reach.
+  </div>
+
+</section>
+
+<!-- ONTOLOGY -->
+<section id="ontology">
+  <div class="section-eyebrow">Data Architecture</div>
+  <h2 class="section-title">The TITAN Ontology — ten core objects, one unified data model.</h2>
+  <p class="section-lead">The ontology is the semantic layer that resolves the Marine Corps' identity problem: the same Marine currently exists as different, inconsistent records across 15+ systems. TITAN's object model creates one authoritative record per entity, with full lineage back to source systems.</p>
+
+  <table class="onto-table">
+    <thead>
+      <tr>
+        <th style="width:140px">Object</th>
+        <th style="width:130px">Source Systems</th>
+        <th>Core Fields</th>
+        <th style="width:100px">New Fields</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="obj-name">Marine</div><div class="obj-src">Person of record</div></td>
+        <td><span class="tag">MCTFS</span> <span class="tag">MCRISS</span></td>
+        <td><div class="field-list">
+          <span class="field-tag auth">EDIPI</span><span class="field-tag auth">PMOS / IMOS</span><span class="field-tag auth">Grade / Rank</span><span class="field-tag auth">Service dates</span><span class="field-tag auth">EAS / ECC</span><span class="field-tag auth">Pay grade</span><span class="field-tag auth">Dependent data</span><span class="field-tag auth">LIMDU flags</span><span class="field-tag auth">Dwell time</span><span class="field-tag auth">Component (AC/RC)</span>
+        </div></td>
+        <td><div class="field-list"><span class="field-tag new">Career preferences</span><span class="field-tag new">Retention risk score</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="obj-name">Performance Record</div><div class="obj-src">Evaluations &amp; fitness reports</div></td>
+        <td><span class="tag">TFRS</span> <span class="tag">ORMA</span> <span class="tag">JEPES</span></td>
+        <td><div class="field-list">
+          <span class="field-tag auth">Fitness report data</span><span class="field-tag auth">Comparative assessment</span><span class="field-tag auth">MRO recommendations</span><span class="field-tag auth">PME completion</span><span class="field-tag auth">Board selections</span>
+        </div></td>
+        <td><div class="field-list"><span class="field-tag new">AI performance summary</span><span class="field-tag new">Trajectory score</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="obj-name">Training Record</div><div class="obj-src">School seats &amp; qualifications</div></td>
+        <td><span class="tag">MCTIMS</span> <span class="tag">MSHARP</span></td>
+        <td><div class="field-list">
+          <span class="field-tag auth">MOS schools completed</span><span class="field-tag auth">Qualification dates</span><span class="field-tag auth">Expiration dates</span><span class="field-tag auth">PME levels</span><span class="field-tag auth">Language quals</span><span class="field-tag auth">Special certs</span>
+        </div></td>
+        <td><div class="field-list"><span class="field-tag new">Upcoming seat allocations</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="obj-name">Billet</div><div class="obj-src">Authorized position</div></td>
+        <td><span class="tag">TFSMS</span></td>
+        <td><div class="field-list">
+          <span class="field-tag auth">Billet ID</span><span class="field-tag auth">MOS requirement</span><span class="field-tag auth">Grade requirement</span><span class="field-tag auth">TS ASR auth</span><span class="field-tag auth">AS ASR auth</span><span class="field-tag auth">Manning precedence</span><span class="field-tag auth">B-billet flag</span><span class="field-tag auth">OCONUS/CONUS</span><span class="field-tag auth">Tour length</span>
+        </div></td>
+        <td><div class="field-list"><span class="field-tag new">Fill history</span><span class="field-tag new">Structure change alerts</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="obj-name">Unit</div><div class="obj-src">Organizational node</div></td>
+        <td><span class="tag">TFSMS</span> <span class="tag">MCTFS</span></td>
+        <td><div class="field-list">
+          <span class="field-tag auth">UIC</span><span class="field-tag auth">T/O structure</span><span class="field-tag auth">Manning level</span><span class="field-tag auth">Staffing goal</span><span class="field-tag auth">Deployment schedule</span><span class="field-tag auth">Location</span>
+        </div></td>
+        <td><div class="field-list"><span class="field-tag new">Real-time GAR</span><span class="field-tag new">Readiness score</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="obj-name">Assignment</div><div class="obj-src">Marine → Billet linkage</div></td>
+        <td><span class="tag">WebMASS</span> <span class="tag">MCTFS</span></td>
+        <td><div class="field-list">
+          <span class="field-tag auth">Orders number</span><span class="field-tag auth">Report date</span><span class="field-tag auth">Departure date</span><span class="field-tag auth">Order type</span><span class="field-tag auth">Status</span>
+        </div></td>
+        <td><div class="field-list"><span class="field-tag new">Auto-triggered actions</span><span class="field-tag new">Conflict flags</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="obj-name">Retention Action</div><div class="obj-src">RELM workflow</div></td>
+        <td><span class="tag">TFRS</span></td>
+        <td><div class="field-list">
+          <span class="field-tag auth">Action type (FTAP/STAP)</span><span class="field-tag auth">Eligibility window</span><span class="field-tag auth">Bonus eligibility</span><span class="field-tag auth">Career counselor notes</span><span class="field-tag auth">Disposition</span>
+        </div></td>
+        <td><div class="field-list"><span class="field-tag new">Predictive risk flag</span><span class="field-tag new">Auto chain triggers</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="obj-name">Admin Action</div><div class="obj-src">Replaces AA Form</div></td>
+        <td><span class="tag">ETMS-2</span> <span class="tag">Email/Paper</span></td>
+        <td><div class="field-list">
+          <span class="field-tag auth">Action type (20+ types)</span><span class="field-tag auth">Initiating Marine</span><span class="field-tag auth">Routing chain</span><span class="field-tag auth">State</span><span class="field-tag auth">Enclosures</span>
+        </div></td>
+        <td><div class="field-list"><span class="field-tag new">Auto pre-screening</span><span class="field-tag new">Digital signature chain</span><span class="field-tag new">Real-time status</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="obj-name">Planning Artifact</div><div class="obj-src">GAR / ASR / Memo-01</div></td>
+        <td><span class="tag">MPP Excel</span> <span class="tag">Cognos</span></td>
+        <td><div class="field-list">
+          <span class="field-tag auth">GAR (grade × PMOS × FY)</span><span class="field-tag auth">TS / AS ASR</span><span class="field-tag auth">End strength target</span><span class="field-tag auth">T2P2 estimate</span><span class="field-tag auth">B-billet allocation</span>
+        </div></td>
+        <td><div class="field-list"><span class="field-tag new">Live inventory delta</span><span class="field-tag new">Scenario variants</span><span class="field-tag new">Auto Memo-01 draft</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="obj-name">Policy Document</div><div class="obj-src">Searchable knowledge base</div></td>
+        <td><span class="tag">MARADMIN BB</span> <span class="tag">MCO registry</span></td>
+        <td><div class="field-list">
+          <span class="field-tag auth">Document type</span><span class="field-tag auth">Effective date</span><span class="field-tag auth">Supersedes</span><span class="field-tag auth">Full text</span>
+        </div></td>
+        <td><div class="field-list"><span class="field-tag new">NLP topic tags</span><span class="field-tag new">AI semantic search</span><span class="field-tag new">MARADMIN authoring</span></div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box mt24">
+    <strong>Key ontology rule:</strong> TITAN never creates a competing authoritative source. Every field tagged <span style="background:#EFF6FF;color:#2563EB;padding:1px 6px;border-radius:3px;font-size:11px;border:1px solid #bfdbfe">AUTH</span> traces back to its source system with a timestamp. When TITAN data and a legacy system disagree, TITAN surfaces both values with lineage — the source system is always right; TITAN makes the discrepancy visible and actionable.
+  </div>
+</section>
+
+<!-- FIVE DOMAINS -->
+<section id="domains">
+  <div class="section-eyebrow">System Architecture</div>
+  <h2 class="section-title">Five integrated domains. One shared data model.</h2>
+  <p class="section-lead">Each domain owns a defined slice of the HRDP mission. They are not modules — they share one ontology, one data model, and one access control layer. An action in any domain is immediately visible across all others.</p>
+
+  <div class="domain-block db-d1">
+    <div class="db-header">
+      <div class="db-num n-d1">D1</div>
+      <div><div class="db-name">Personnel &amp; Pay</div><div class="db-desc">The integration layer over MCTFS — connecting the authoritative pay and personnel system to every downstream capability that currently fails to talk back to it</div></div>
+    </div>
+    <div class="cap-list">
+      <div class="cap-item"><div class="cap-dot" style="background:#2563EB"></div><div class="cap-text">Real-time MCTFS data pipeline — rank changes, MOS updates, duty station changes surface immediately to all connected domains (no diary entry batch cycles)</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#2563EB"></div><div class="cap-text">DCPS interface for pay disbursement — MCTFS feeds DCPS; TITAN integrates with both without disrupting the pay chain</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#2563EB"></div><div class="cap-text">DEERS/RAPIDS integration for identity management and dependent verification</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#2563EB"></div><div class="cap-text">Complete audit trail on every transaction — who changed what, when, from what source</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#2563EB"></div><div class="cap-text">AC and RC Marines in a single unified record — no separate Reserve system</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#2563EB"></div><div class="cap-text">Title 10 end strength reporting — TFDW remains the statutory system of record through a deliberate 36–48 month migration with JAG and comptroller review. TITAN reads from TFDW in Phases 1–2.</div></div>
+    </div>
+    <div class="replaces">
+      <div class="replaces-label">Replaces</div>
+      <div class="replace-badges">
+        <span class="rbadge">3270 Terminal</span><span class="rbadge">Cognos reporting extracts</span><span class="rbadge">Drill Manager (Reserve pay)</span>
+      </div>
+      <div class="replaces-label" style="margin-top:8px">Phase 1 read pipeline (authoritative — not replaced)</div>
+      <div class="replace-badges">
+        <span class="rbadge" style="border-color:rgba(37,99,235,0.3);color:#1D4ED8">MCTFS (read-only)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="domain-block db-d2">
+    <div class="db-header">
+      <div class="db-num n-d2">D2</div>
+      <div><div class="db-name">Force Structure &amp; Billet Management</div><div class="db-desc">The authoritative billet registry with real-time authorization status, fill tracking, and structure change propagation</div></div>
+    </div>
+    <div class="cap-list">
+      <div class="cap-item"><div class="cap-dot" style="background:#16A34A"></div><div class="cap-text">Every billet tracks TWO authorization states explicitly: Target Strength ASR (planning/budgeting) and Average Strength ASR (staffing execution) — never conflated</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#16A34A"></div><div class="cap-text">B-billet allocation tracked as discrete inventory category — monitors and planners always see net assignable inventory, not gross authorized strength</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#16A34A"></div><div class="cap-text">Structure change impact alerts — when a TOECRR defunds a billet, all affected assignments and en-route Marines are automatically flagged</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#16A34A"></div><div class="cap-text">Manning Precedence Levels are live parameters — when CMC priorities shift, staffing model recalculates automatically</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#16A34A"></div><div class="cap-text">Internal TOECR builder — standardized structure change requests built natively in TITAN, with impact modeling, routing templates, and direct submission to CD&I. CD&I retains approval authority; the builder reduces the coordination overhead that currently delays structure adjustments by weeks.</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#16A34A"></div><div class="cap-text">AC and RC billets in one registry — monitors see the full Total Force picture for the first time</div></div>
+    </div>
+    <div class="replaces">
+      <div class="replaces-label">Replaces</div>
+      <div class="replace-badges">
+        <span class="rbadge">TFSMS</span><span class="rbadge">WebMASS</span><span class="rbadge">Division Excel slating tools</span><span class="rbadge">Drill Manager (Reserve billets)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="domain-block db-d3">
+    <div class="db-header">
+      <div class="db-num n-d3">D3</div>
+      <div><div class="db-name">Talent &amp; Career Management</div><div class="db-desc">The merit-based assignment and retention engine — operationalizing the HRDP's TM mandate</div></div>
+    </div>
+    <div class="cap-list">
+      <div class="cap-item"><div class="cap-dot" style="background:#7C3AED"></div><div class="cap-text">Whole Marine Profile — single view integrating service record, performance trajectory, MOS qualifications, assignment history, education, language skills, family considerations, and career preferences</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#7C3AED"></div><div class="cap-text">Merit-based assignment ranking — AI surfaces ranked candidate list for each billet by performance trajectory, billet alignment, dwell time, family considerations, and unit readiness priority. Monitor retains decision authority.</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#7C3AED"></div><div class="cap-text">Marine Career Portal — self-service interface (accessible via MOL replacement on NIPR) where Marines browse eligible billets, submit preferences, and track career trajectory</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#7C3AED"></div><div class="cap-text">Predictive retention intelligence — continuous risk scoring from performance trend, assignment satisfaction signals, peer cohort data, compensation gap, and family program engagement</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#7C3AED"></div><div class="cap-text">AIP-generated performance summaries — evaluation narrative text from TFRS/ORMA synthesized into structured summaries for monitors, replacing 10-tab manual review</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#7C3AED"></div><div class="cap-text">OccFld health dashboard — MOS-level inventory vs. structure, grade structure shape, shortfall alerts, and career progression tracking by community</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#7C3AED"></div><div class="cap-text">Structured communication log — Marines log career communications visible to their monitor and career counselor. Counselors document session outcomes. Monitors record contact history. Not a replacement for ETMS or official email — a persistent interaction layer that survives personnel rotations.</div></div>
+    </div>
+    <div class="replaces">
+      <div class="replaces-label">Replaces</div>
+      <div class="replace-badges">
+        <span class="rbadge">TFRS</span><span class="rbadge">ORMA</span><span class="rbadge">JEPES</span><span class="rbadge">MOL (self-service)</span><span class="rbadge">DBR (Digital Board Room)</span><span class="rbadge">Monitor Excel trackers</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="domain-block db-d4">
+    <div class="db-header">
+      <div class="db-num n-d4">D4</div>
+      <div><div class="db-name">Workflow &amp; Administrative Actions</div><div class="db-desc">Every administrative action as a structured digital workflow — retiring the AA form, group mailboxes, and paper routing chains</div></div>
+    </div>
+    <div class="cap-list">
+      <div class="cap-item"><div class="cap-dot" style="background:#EA580C"></div><div class="cap-text">Unified action portal replacing the AA form — accessible from both MCEN and non-MCEN networks. Marines initiate; commanders endorse digitally; HQMC approves via CAC-authenticated signature; action executes automatically in D1.</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#EA580C"></div><div class="cap-text">20+ MMIB-3 action types handled natively with automated pre-screening, eligibility checks, and routing logic — 80%+ automation of current manual workflow</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#EA580C"></div><div class="cap-text">Automated reenlistment chain — upon approval, system simultaneously triggers school funding request, PCS order generation, bonus payment, EAS/ECC update, and dwell time reset</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#EA580C"></div><div class="cap-text">Promotion board management — board packages assembled from Whole Marine Profile automatically. PDF text extraction, DBR replacement, and digital deliberation tools native.</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#EA580C"></div><div class="cap-text">Real-time package status visible to initiating Marine and unit — no more "submit and hope"</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#EA580C"></div><div class="cap-text">MARADMIN authoring and publication native — replacing Notepad format and 69-character line limits</div></div>
+    </div>
+    <div class="replaces">
+      <div class="replaces-label">Replaces</div>
+      <div class="replace-badges">
+        <span class="rbadge">ETMS-2</span><span class="rbadge">AA Form workflows</span><span class="rbadge">Group mailbox intake</span><span class="rbadge">Paper endorsement chains</span><span class="rbadge">DBR (board management)</span><span class="rbadge">MARADMIN bulletin board</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="domain-block db-d5">
+    <div class="db-header">
+      <div class="db-num n-d5">D5</div>
+      <div><div class="db-name">Intelligence &amp; Planning</div><div class="db-desc">The assessment and decision-support layer — live data powering the full HRDP assessment framework (Tracking, Modeling, Exploratory)</div></div>
+    </div>
+    <div class="cap-list">
+      <div class="cap-item"><div class="cap-dot" style="background:#0F766E"></div><div class="cap-text">Real-time GAR tracking — grade-by-PMOS inventory vs. target, live from D1 data. C3AI has already modernized four of the Marine Corps' planning models; TITAN integrates with and extends this work, connecting C3AI-enhanced outputs to live MCTFS data streams rather than periodic extracts.</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#0F766E"></div><div class="cap-text">FYDP scenario engine — model "what if" variants (retention drops 3% in 0311, new unit stands up in FY28) against live inventory, producing GAR and end-strength impacts within seconds</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#0F766E"></div><div class="cap-text">Memo-01 auto-generation — annual retention and accession plan drafted from live inventory, retention rates, and GAR requirements. Weeks of manual work reduced to analyst review hours.</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#0F766E"></div><div class="cap-text">Commander's readiness dashboard — real-time GAR from platoon to CMC, deployable vs. non-deployable, upcoming gains/losses, retention risk by cohort</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#0F766E"></div><div class="cap-text">STF pipeline visibility — recruits contracted by PEF → school seat allocation → projected MOS graduation → assignable inventory date, unified across MCRC, TECOM, and M&amp;RA</div></div>
+      <div class="cap-item"><div class="cap-dot" style="background:#0F766E"></div><div class="cap-text">Battle rhythm forum packages — MPWG, MPB, MPEB, Three Legged Stool, and 3-Star Forum data products generated automatically from live data on schedule</div></div>
+    </div>
+    <div class="replaces">
+      <div class="replaces-label">Absorbs &amp; Replaces (Cognos being retired)</div>
+      <div class="replace-badges">
+        <span class="rbadge">Cognos</span><span class="rbadge">Division Power BI dashboards</span><span class="rbadge">MPP Excel planning models</span><span class="rbadge">Manual Memo-01 compilation</span><span class="rbadge">SharePoint trackers</span><span class="rbadge">Ad hoc SQL extract workflows</span>
+      </div>
+      <p style="font-size:11px;color:#0F766E;margin-top:8px;font-weight:600">Cognos is being retired. TITAN absorbs its unique analytics and reporting capabilities — ensuring continuity without the batch-processing constraints.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HRDP ALIGNMENT -->
+<section id="hrdp">
+  <div class="section-eyebrow">Regulatory Compliance</div>
+  <h2 class="section-title">TITAN is built around the HRDP — not bolted onto it.</h2>
+  <p class="section-lead">MCO 5250.1 defines five HRDP phases. Every TITAN domain maps to one or more phases. The system doesn't require a policy exception — it operationalizes what the policy already mandates.</p>
+
+  <div class="mt24">
+    <div class="hrdp-phase">
+      <div class="hrdp-pill hp-guidance">Phase 1<br>Guidance</div>
+      <div class="hrdp-content">
+        <span class="hc-tag hc-ok">NDAA end strength as live D5 planning parameter ✓</span>
+        <span class="hc-tag hc-ok">CPG priorities cascade to staffing model ✓</span>
+        <span class="hc-tag hc-ok">NDS/NMS linkage to force structure ✓</span>
+        <span class="hc-tag hc-new">Guidance change triggers automatic GAR recalculation — NEW</span>
+      </div>
+    </div>
+    <div class="hrdp-phase" style="margin-top:10px">
+      <div class="hrdp-pill hp-planning">Phase 2<br>Planning</div>
+      <div class="hrdp-content">
+        <span class="hc-tag hc-ok">T/O → T2P2 → B-billet → ASR → Assignable Inventory chain explicit ✓</span>
+        <span class="hc-tag hc-ok">TS ASR and AS ASR tracked as separate data states ✓</span>
+        <span class="hc-tag hc-ok">GAR as first-class planning object (grade × PMOS × FY) ✓</span>
+        <span class="hc-tag hc-ok">FYDP scenario engine replaces Excel planning models ✓</span>
+        <span class="hc-tag hc-new">Structure changes within 3-year cycle auto-flagged — NEW</span>
+      </div>
+    </div>
+    <div class="hrdp-phase" style="margin-top:10px">
+      <div class="hrdp-pill hp-production">Phase 3<br>Production</div>
+      <div class="hrdp-content">
+        <span class="hc-tag hc-ok">STF pipeline unified across MCRC, TECOM, M&amp;RA ✓</span>
+        <span class="hc-tag hc-ok">TIP execution tracked in D5 against school seat allocations ✓</span>
+        <span class="hc-tag hc-ok">MCRISS interfaces as accessions genesis (record created in TITAN) ✓</span>
+        <span class="hc-tag hc-ok">Retention execution (FTAP/STAP) integrated in D3 ✓</span>
+        <span class="hc-tag hc-new">Production shortfall alerts surface to STF Working Group — NEW</span>
+      </div>
+    </div>
+    <div class="hrdp-phase" style="margin-top:10px">
+      <div class="hrdp-pill hp-assignment">Phase 4<br>Assignment</div>
+      <div class="hrdp-content">
+        <span class="hc-tag hc-ok">Staffing goal from MMIB surfaces directly in monitor workspace ✓</span>
+        <span class="hc-tag hc-ok">Manning Precedence Levels enforced in assignment engine ✓</span>
+        <span class="hc-tag hc-ok">Career counseling tools integrated (MMRP-50 functions native) ✓</span>
+        <span class="hc-tag hc-ok">WebMASS PCS order workflow replaced by D4 ✓</span>
+        <span class="hc-tag hc-new">Billet marketplace — Marine preference capture (TM transparency mandate) — NEW</span>
+      </div>
+    </div>
+    <div class="hrdp-phase" style="margin-top:10px">
+      <div class="hrdp-pill hp-assessment">Phase 5<br>Assessment</div>
+      <div class="hrdp-content">
+        <span class="hc-tag hc-ok">Monthly end strength reconciliation automated in D5 ✓</span>
+        <span class="hc-tag hc-ok">Memo-01 adjustments generated from live actuals ✓</span>
+        <span class="hc-tag hc-ok">3-tier assessment framework (Tracking/Modeling/Exploratory) native ✓</span>
+        <span class="hc-tag hc-ok">Battle rhythm forum packages auto-generated ✓</span>
+        <span class="hc-tag hc-new">TFDW historical data migrated — statutory reporting transferred to TITAN D5 — TRANSITION REQUIRED</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box mt24">
+    <strong>Note on TFDW:</strong> The Total Force Data Warehouse holds 30+ years of historical manpower data and is the Marine Corps' statutory system of record for Title 10 end strength reporting. TITAN absorbs TFDW's operational function over time, but the legal reporting obligation requires a deliberate transition plan with JAG and HQMC comptroller review. TFDW is not retired on Day 1 — it is sunset over a 36–48 month migration period.
+  </div>
+</section>
+
+
+<!-- GOVERNANCE & ACCESS -->
+<section id="governance">
+  <div class="section-eyebrow">Access Control &amp; Governance</div>
+  <h2 class="section-title">Governance built into the system — not bolted on.</h2>
+  <p class="section-lead">TITAN's governance model is architecture, not policy. Access is enforced at the data object level. Every consequential action has a tier, and every tier has accountability requirements built into the workflow itself. Users see what they need to do their job and nothing more — permissions are intuitive by design.</p>
+
+  <div class="card-grid cg-3 mt16">
+    <div class="card" style="border-top:3px solid #DC2626">
+      <div class="card-icon" style="background:#FEF2F2;font-size:18px;">⚖️</div>
+      <div class="card-title">Tier 1 — High-Stakes Career Decisions</div>
+      <div class="card-body">
+        <p style="margin-bottom:8px;font-size:12px;color:#6B7280"><strong>Assignments · Promotions · Separations · Legal actions</strong></p>
+        <ul style="font-size:12px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:5px">
+          <li style="padding-left:10px;border-left:2px solid #DC2626">Full audit trail — who recommended, who decided, when, why</li>
+          <li style="padding-left:10px;border-left:2px solid #DC2626">AI recommendation is advisory only — human decision required</li>
+          <li style="padding-left:10px;border-left:2px solid #DC2626">Override requires structured rationale (dropdown + free text)</li>
+          <li style="padding-left:10px;border-left:2px solid #DC2626">CAC-authenticated signature at every routing step</li>
+          <li style="padding-left:10px;border-left:2px solid #DC2626">Decision rationale logged permanently — feeds model improvement</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid #EA580C">
+      <div class="card-icon" style="background:#FFF7ED;font-size:18px;">📋</div>
+      <div class="card-title">Tier 2 — Resource Allocation</div>
+      <div class="card-body">
+        <p style="margin-bottom:8px;font-size:12px;color:#6B7280"><strong>Training seats · Bonus targeting · SRB eligibility · School allocations</strong></p>
+        <ul style="font-size:12px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:5px">
+          <li style="padding-left:10px;border-left:2px solid #EA580C">Role-based approval authority — monitor or planner level</li>
+          <li style="padding-left:10px;border-left:2px solid #EA580C">Audit trail maintained; senior leader visibility</li>
+          <li style="padding-left:10px;border-left:2px solid #EA580C">AI assists with optimization recommendations; human approves</li>
+          <li style="padding-left:10px;border-left:2px solid #EA580C">Allocation changes trigger downstream notifications</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid #0F766E">
+      <div class="card-icon" style="background:#F0FDFA;font-size:18px;">📊</div>
+      <div class="card-title">Tier 3 — Operational Insights</div>
+      <div class="card-body">
+        <p style="margin-bottom:8px;font-size:12px;color:#6B7280"><strong>Dashboards · Diagnostics · Trend analysis · Planning models</strong></p>
+        <ul style="font-size:12px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:5px">
+          <li style="padding-left:10px;border-left:2px solid #0F766E">Broad access, role-filtered views — data level, not system level</li>
+          <li style="padding-left:10px;border-left:2px solid #0F766E">Analysts and ORSAs have full analytical access; no PII modification</li>
+          <li style="padding-left:10px;border-left:2px solid #0F766E">Scenario modeling runs in sandboxed environment — no live record impact</li>
+          <li style="padding-left:10px;border-left:2px solid #0F766E">Read access logged but not gated — decision speed matters here</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt24">
+    <div class="section-eyebrow" style="margin-bottom:16px">Role-Based Access Matrix</div>
+    <table class="constraint-table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Own Record</th>
+          <th>Population Access</th>
+          <th>Aggregate / Analytics</th>
+          <th>Write / Modify</th>
+          <th>Audit Logs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Individual Marine</strong></td>
+          <td><span class="sev-low">Full view</span></td>
+          <td>—</td>
+          <td>—</td>
+          <td>Own preferences &amp; comm log</td>
+          <td>Own actions only</td>
+        </tr>
+        <tr>
+          <td><strong>Career Counselor</strong></td>
+          <td>Own record</td>
+          <td><span class="sev-low">Assigned population — retention + counseling log</span></td>
+          <td>Retention trends (unit)</td>
+          <td>Counseling log, RELM initiation</td>
+          <td>Own actions</td>
+        </tr>
+        <tr>
+          <td><strong>Monitor (MMEA/MMOA)</strong></td>
+          <td>Own record</td>
+          <td><span class="sev-low">Assigned population — full Whole Marine Profile</span></td>
+          <td>MOS community aggregate</td>
+          <td>Assignments, admin actions (T1/T2)</td>
+          <td>Own decisions</td>
+        </tr>
+        <tr>
+          <td><strong>OccFld Manager</strong></td>
+          <td>Own record</td>
+          <td>MOS community read-only</td>
+          <td><span class="sev-low">OccFld health dashboard, grade structure</span></td>
+          <td>TOECR submission, TIP input</td>
+          <td>Own submissions</td>
+        </tr>
+        <tr>
+          <td><strong>Analyst / ORSA</strong></td>
+          <td>Own record</td>
+          <td>Full read (no PII modification)</td>
+          <td><span class="sev-low">Full D5 suite — scenario engine, all planning tools</span></td>
+          <td>Sandboxed scenario models only</td>
+          <td>Read access logs</td>
+        </tr>
+        <tr>
+          <td><strong>MPP Planner</strong></td>
+          <td>Own record</td>
+          <td>Planning population</td>
+          <td><span class="sev-low">Full planning suite — FYDP scenarios, GAR, Memo-01</span></td>
+          <td>Planning artifacts, Memo-01 drafts</td>
+          <td>Planning actions</td>
+        </tr>
+        <tr>
+          <td><strong>Senior Leader (O-7+)</strong></td>
+          <td>Own record</td>
+          <td>Command / enterprise aggregate</td>
+          <td><span class="sev-low">Strategic dashboards — Total Force to platoon</span></td>
+          <td>Endorsed actions (Tier 1)</td>
+          <td>Enterprise audit</td>
+        </tr>
+        <tr>
+          <td><strong>System Administrator</strong></td>
+          <td>Own record</td>
+          <td>User management only</td>
+          <td>System health metrics</td>
+          <td>Access control, audit export</td>
+          <td><span class="sev-low">Full audit access</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight-box mt24">
+    <strong>Policy ingestion as a governance input:</strong> TITAN ingests DoD directives, SecNavInsts, MCOs, MARADMINs, and service bulletins. Policy documents are semantically indexed and linked to relevant workflows — when a policy changes, affected decision workflows surface alerts automatically. The system doesn't just store policy; it applies it contextually at the point of decision. This is what distinguishes a Talent Intelligence platform from an HR database.
+  </div>
+</section>
+
+<!-- TALENT INTELLIGENCE FRAMING — inserted before personas -->
+
+<!-- PERSONAS -->
+<section id="personas">
+  <div class="section-eyebrow">Operational Views</div>
+  <h2 class="section-title">What TITAN looks like from six seats.</h2>
+  <p class="section-lead">Each persona has a tailored workspace built on the same underlying data model. Role-based access control determines what each user sees — not which system they log into.</p>
+
+  <div class="persona-nav">
+    <button class="ptab active" onclick="showPersona('p-monitor',this)">GySgt Webb · Monitor</button>
+    <button class="ptab" onclick="showPersona('p-marine',this)">Cpl Torres · Marine</button>
+    <button class="ptab" onclick="showPersona('p-planner',this)">Maj Ochsner · Planner</button>
+    <button class="ptab" onclick="showPersona('p-counselor',this)">SSgt Rivera · Career Counselor</button>
+    <button class="ptab" onclick="showPersona('p-occfld',this)">Maj Kim · OccFld Manager</button>
+    <button class="ptab" onclick="showPersona('p-senior',this)">BGen Hayes · Senior Leader</button>
+  </div>
+
+  <!-- MONITOR -->
+  <div id="p-monitor" class="persona-view active">
+    <div class="pv-header">
+      <div class="pv-avatar">MW</div>
+      <div>
+        <div class="pv-name">GySgt Marcus Webb — Enlisted Assignments Monitor</div>
+        <div class="pv-role">MMEA · MOS 3451 · Manages 340 Marines · Domain 3 + D4 primary user</div>
+      </div>
+    </div>
+    <div class="pv-body">
+      <div class="card-grid cg-2">
+        <div class="pv-section">
+          <div class="pv-section-title">Current state (before TITAN)</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #EF4444">5+ systems to build one Marine's profile (3270, TFRS, MOL, TFSMS, ORMA) — 20–35 min per lookup</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">14,000-row Excel tracker, last reliably updated 6 weeks ago</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">~47 emails/day from group mailbox — no intake structure</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">"First in time, first in line" policy — best Marine rarely submits first</li>
+            <li style="padding-left:10px;border-left:2px solid #F97316">Writes orders against billets that defund before the Marine reports</li>
+          </ul>
+        </div>
+        <div class="pv-section">
+          <div class="pv-section-title">TITAN state</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Whole Marine Profile in one view — all data resolved, no tab-switching</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">AI-ranked candidate list for each vacancy — scored by performance, fit, dwell time, family flags</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Structured action portal replaces group mailbox — pre-screened intake</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Real-time billet status — structure change alerts before orders are cut</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Staffing goal from MMIB surfaced directly — assignment targets visible</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pv-section mt16">
+        <div class="pv-section-title">Monitor workspace mockup</div>
+        <div class="screen-mock">
+          <div class="mock-bar"><div class="mock-dot" style="background:#EF4444"></div><div class="mock-dot" style="background:#F59E0B"></div><div class="mock-dot" style="background:#10B981"></div><span style="color:rgba(255,255,255,0.6);font-size:11px;margin-left:8px">TITAN · Monitor Workspace · GySgt Webb · 3451 Community</span></div>
+          <div class="mock-widgets">
+            <div class="mock-widget"><div class="mw-num" style="color:#2563EB">340</div><div class="mw-label">Marines assigned</div></div>
+            <div class="mock-widget"><div class="mw-num" style="color:#EA580C">23</div><div class="mw-label">Vacancies to fill</div></div>
+            <div class="mock-widget"><div class="mw-num" style="color:#DC2626">7</div><div class="mw-label">High retention risk</div></div>
+          </div>
+          <div class="mock-list">
+            <div class="mock-row"><span style="font-weight:600">Cpl A. Torres — 3531</span><span style="color:#6B7280">EAS in 14 mo · Dwell OK · Prefers Camp Pendleton</span><span class="status-pill sp-amber">Retention Risk: Med</span></div>
+            <div class="mock-row"><span style="font-weight:600">Sgt R. Nguyen — 3531</span><span style="color:#6B7280">FTAP eligible · Performance: Top 15%</span><span class="status-pill sp-green">AI Rank: #1 for Billet 4721</span></div>
+            <div class="mock-row"><span style="font-weight:600">GySgt M. Davis — 3529</span><span style="color:#6B7280">⚠ Billet 3304 structure change flagged</span><span class="status-pill sp-red">Action Required</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="pv-section mt16">
+        <div class="pv-section-title">Time savings</div>
+        <div class="card-grid cg-3">
+          <div style="background:#EFF6FF;border-radius:8px;padding:12px 14px;text-align:center"><div style="font-size:22px;font-weight:700;color:#1D4ED8">22 min</div><div style="font-size:11px;color:#1E40AF;margin-top:2px">saved per Marine lookup</div></div>
+          <div style="background:#F0FDF4;border-radius:8px;padding:12px 14px;text-align:center"><div style="font-size:22px;font-weight:700;color:#15803D">~80%</div><div style="font-size:11px;color:#166534;margin-top:2px">admin actions automated</div></div>
+          <div style="background:#FEF3C7;border-radius:8px;padding:12px 14px;text-align:center"><div style="font-size:22px;font-weight:700;color:#92400E">0</div><div style="font-size:11px;color:#78350F;margin-top:2px">defunded-billet order surprises</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARINE -->
+  <div id="p-marine" class="persona-view">
+    <div class="pv-header">
+      <div class="pv-avatar">AT</div>
+      <div>
+        <div class="pv-name">Cpl Aaliyah Torres — Individual Marine, FMF</div>
+        <div class="pv-role">Motor Transport Operator · MOS 3531 · Camp Lejeune · 14 months to EAS · Domain 3 self-service user</div>
+      </div>
+    </div>
+    <div class="pv-body">
+      <div class="card-grid cg-2">
+        <div class="pv-section">
+          <div class="pv-section-title">Current state (before TITAN)</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #EF4444">Zero systems show her available billet options</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">Submitted reenlistment inquiry 3 weeks ago — no status update</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">Career preferences never captured in any system, ever</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">Making a 4-year commitment with less information than any civilian job offer provides</li>
+          </ul>
+        </div>
+        <div class="pv-section">
+          <div class="pv-section-title">TITAN state</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Marine Career Portal shows eligible billets filtered to her grade/MOS/dwell eligibility</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Package tracker shows real-time status of every submitted action</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Career trajectory view shows probable paths based on cohort data and her performance</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Her stated preferences feed the monitor's AI ranking — she has a voice in her assignment</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Communication log — can send career notes to her monitor and counselor; sees responses and counseling session summaries in one place</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pv-section mt16">
+        <div class="pv-section-title">Marine self-service portal mockup (NIPR accessible)</div>
+        <div class="screen-mock">
+          <div class="mock-bar"><div class="mock-dot" style="background:#EF4444"></div><div class="mock-dot" style="background:#F59E0B"></div><div class="mock-dot" style="background:#10B981"></div><span style="color:rgba(255,255,255,0.6);font-size:11px;margin-left:8px">TITAN · My Career · Cpl Torres, A.</span></div>
+          <div class="mock-widgets">
+            <div class="mock-widget"><div class="mw-num" style="color:#7C3AED">14 mo</div><div class="mw-label">Until EAS</div></div>
+            <div class="mock-widget"><div class="mw-num" style="color:#16A34A">8</div><div class="mw-label">Billets available to you</div></div>
+            <div class="mock-widget"><div class="mw-num" style="color:#EA580C">1</div><div class="mw-label">Package in review</div></div>
+          </div>
+          <div style="background:#fff;border:1px solid #E2E6EF;border-radius:6px;padding:10px 12px;margin-top:8px;font-size:12px">
+            <div style="font-weight:700;color:#0A1628;margin-bottom:8px">Available Billets — 3531 · Cpl/Sgt eligible</div>
+            <div class="mock-list" style="margin-top:0">
+              <div class="mock-row"><span>Camp Pendleton, CA · Sgt billet · 36 mo</span><span style="color:#6B7280">Motor Transport Co, 1st MLG</span><span class="status-pill sp-green">Matches preference</span></div>
+              <div class="mock-row"><span>29 Palms, CA · Cpl billet · 24 mo</span><span style="color:#6B7280">Combat Logistics Battalion</span><span class="status-pill sp-blue">Eligible</span></div>
+              <div class="mock-row"><span>Okinawa, Japan · Cpl billet · 12 mo unaccomp</span><span style="color:#6B7280">III MEF Support Group</span><span class="status-pill sp-blue">Eligible</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANNER -->
+  <div id="p-planner" class="persona-view">
+    <div class="pv-header">
+      <div class="pv-avatar">DO</div>
+      <div>
+        <div class="pv-name">Maj Daniel Ochsner — End Strength Planner</div>
+        <div class="pv-role">MPP-20 · MOS 7202 · Plans against 5-year FYDP · Domain 5 primary user</div>
+      </div>
+    </div>
+    <div class="pv-body">
+      <div class="card-grid cg-2">
+        <div class="pv-section">
+          <div class="pv-section-title">Current state (before TITAN)</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #EF4444">Planning against Cognos extracts 2+ weeks old</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">No scenario engine — each "what if" requires rebuilding Excel models</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">Force structure changes cascade silently — discovers deviations weeks later</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">Optimizing FY end strength, not GAR across FYDP — wrong metric, wrong incentive</li>
+          </ul>
+        </div>
+        <div class="pv-section">
+          <div class="pv-section-title">TITAN state</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Live inventory query by grade and PMOS — no extract lag</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">FYDP scenario engine — model retention/accession variants in seconds, see GAR impact immediately</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Structure change alerts cascade to planning models automatically</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Memo-01 draft generated from live data — weeks of manual work become hours of review</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAREER COUNSELOR -->
+  <div id="p-counselor" class="persona-view">
+    <div class="pv-header">
+      <div class="pv-avatar">SR</div>
+      <div>
+        <div class="pv-name">SSgt Marco Rivera — Career Counselor</div>
+        <div class="pv-role">Tactical-level TM · Executes FTAP/STAP/SRB · Frontline retention actor · Domain 3 retention user</div>
+      </div>
+    </div>
+    <div class="pv-body">
+      <div class="card-grid cg-2">
+        <div class="pv-section">
+          <div class="pv-section-title">Current state (before TITAN)</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #EF4444">Finds out a Marine is considering separation when the paperwork arrives — too late for proactive intervention</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">TFRS shows reenlistment mechanics but not retention risk signals</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">No visibility into what bonuses are available to a specific Marine</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">Boat space allocations delivered by spreadsheet — changes not pushed proactively</li>
+          </ul>
+        </div>
+        <div class="pv-section">
+          <div class="pv-section-title">TITAN state</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Retention risk queue — list of at-risk Marines surfaced 6–12 months before EAS, ranked by risk score</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Pre-counseling brief auto-generated from Marine's profile — performance summary, bonus eligibility, available options</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Boat space allocation live in system — counselor sees remaining slots in real time</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">RELM package initiated in portal — eliminates paper, routes digitally to MMEA</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Structured communication log — counseling session outcomes documented and visible to assigned monitor; Marine-initiated notes surface to counselor queue for follow-up</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OCCFLD MANAGER -->
+  <div id="p-occfld" class="persona-view">
+    <div class="pv-header">
+      <div class="pv-avatar">JK</div>
+      <div>
+        <div class="pv-name">Maj Jennifer Kim — OccFld Manager</div>
+        <div class="pv-role">DC CD&I · MOS community health · <em>Secondary duty — not primary assignment</em> · Domain 2 + D5 user</div>
+      </div>
+    </div>
+    <div class="pv-body">
+      <div class="card-grid cg-2">
+        <div class="pv-section">
+          <div class="pv-section-title">Organizational reality to design around</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #F97316">OccFld Manager is a secondary duty — typically given to a senior officer in the field because of seniority, not because of dedicated capacity or formal accountability structures</li>
+            <li style="padding-left:10px;border-left:2px solid #F97316">Maj Kim has a primary job. TITAN cannot assume engaged, empowered, available OccFld management — it must deliver value despite constrained availability</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">MOS inventory health reports generated manually from Cognos/Advana extracts — periodic, not continuous</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">Structure change impacts to her MOS community are discovered after the fact</li>
+          </ul>
+        </div>
+        <div class="pv-section">
+          <div class="pv-section-title">TITAN design response</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Zero-friction dashboard — MOS health visible in one view; proactive alerts surface when action is needed, no calendar-driven log-in required</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Design principle: value delivered without demanding time. Minimal engagement still surfaces the essentials; deeper engagement unlocks richer tools</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Grade structure shape tool with live inventory — continuous, accessible in minutes not hours</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">TOECR builder and TIP submission native — no email coordination; CD&I workflow integrated directly</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SENIOR LEADER -->
+  <div id="p-senior" class="persona-view">
+    <div class="pv-header">
+      <div class="pv-avatar">BH</div>
+      <div>
+        <div class="pv-name">BGen Patricia Hayes — Senior Leader</div>
+        <div class="pv-role">Director, Manpower Management · HRDP governance · Executive readiness visibility · Domain 5 executive user</div>
+      </div>
+    </div>
+    <div class="pv-body">
+      <div class="card-grid cg-2">
+        <div class="pv-section">
+          <div class="pv-section-title">Current state (before TITAN)</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #EF4444">Monthly briefing data compiled manually — always stale by the time she sees it</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">No real-time readiness picture below the division level</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">MPEB prep requires 3–4 analyst-weeks of manual data pull and slide build</li>
+            <li style="padding-left:10px;border-left:2px solid #EF4444">No leading indicators for retention crisis — only trailing data</li>
+          </ul>
+        </div>
+        <div class="pv-section">
+          <div class="pv-section-title">TITAN state</div>
+          <ul style="font-size:13px;color:#4B5568;list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Real-time readiness dashboard from platoon to Total Force — live GAR at every echelon</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">MPEB and 3-Star Forum packages generated automatically from live data</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Retention risk heatmap by MOS and grade — leading indicator, not trailing</li>
+            <li style="padding-left:10px;border-left:2px solid #16A34A">Scenario engine for rapid "what if" analysis during forum deliberations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSTRAINTS -->
+<section id="constraints">
+  <div class="section-eyebrow">Data Gaps &amp; Requirements</div>
+  <h2 class="section-title">What TITAN needs that doesn't exist today.</h2>
+  <p class="section-lead">Every data gap is a risk. These must be resolved before the corresponding domain can operate at full capability. Phase 1 begins with a data quality baseline assessment — surfacing these gaps explicitly is the first deliverable.</p>
+
+  <table class="constraint-table">
+    <thead>
+      <tr>
+        <th>Data Gap</th>
+        <th>Domain Affected</th>
+        <th>Severity</th>
+        <th>Current Workaround</th>
+        <th>Resolution Path</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Career preferences — never captured.</strong> No system has ever asked a Marine where they want to serve, what career goals they hold, or what family constraints affect their assignment.</td>
+        <td>D3 Assignment Engine</td>
+        <td class="sev-high">HIGH</td>
+        <td>None. Monitors guess or Marines call informally.</td>
+        <td>Marine Career Portal preference capture at first login. Structured preference object added to Marine ontology. Initial population via one-time survey at rollout.</td>
+      </tr>
+      <tr>
+        <td><strong>MCTFS data quality unknown.</strong> Field-level error rates across MCTFS records have never been formally audited. Suspected issues: stale MOS codes, incorrect dwell-time records, misaligned billet assignments.</td>
+        <td>D1, D2, D3 — all</td>
+        <td class="sev-high">HIGH</td>
+        <td>Monitors manually verify data they don't trust.</td>
+        <td>120-day pilot deliverable: Foundry pipeline runs, Foundry vs. monitor Excel compared, delta documented. Data Quality Section (MID) owns remediation plan.</td>
+      </tr>
+      <tr>
+        <td><strong>B-billet inventory not tracked in real time.</strong> B-billet assignments (recruiting duty, DI, MSG, etc.) consume assignable inventory but are not surfaced to monitors as a live deduction from available pool.</td>
+        <td>D2 Billet Registry</td>
+        <td class="sev-high">HIGH</td>
+        <td>MMIB manually adjusts staffing goal model inputs.</td>
+        <td>MCTFS already tracks B-billet designators. Foundry pipeline must explicitly extract and categorize. D2 billet registry surfaces net assignable inventory = gross authorized minus B-billet fills.</td>
+      </tr>
+      <tr>
+        <td><strong>Reserve component billet fill data is fragmented.</strong> AR Marines' billet assignments exist in Drill Manager and MCTFS RC records but are not reconciled with TFSMS AC structure in any unified view.</td>
+        <td>D2, D3 (RC)</td>
+        <td class="sev-high">HIGH</td>
+        <td>RAM runs separate staffing models. AC monitors have no RC visibility.</td>
+        <td>Drill Manager data ingested into D2 billet registry alongside TFSMS. RAM and MMEA see unified AC/RC billet picture. Requires RAM coordination and data mapping sprint.</td>
+      </tr>
+      <tr>
+        <td><strong>Fitness report narrative text not machine-readable.</strong> TFRS/ORMA store fitness report narratives as PDFs or unstructured text fields. AIP performance summary capability requires structured or at minimum extractable text.</td>
+        <td>D3 Performance Records</td>
+        <td class="sev-med">MED</td>
+        <td>Monitors read PDFs manually — 10+ tabs per Marine.</td>
+        <td>OCR + NLP extraction pipeline in Foundry. Initial extraction validation against known records. AIP summarization trained on validated extracts before deployment to monitors.</td>
+      </tr>
+      <tr>
+        <td><strong>MCRISS → MCTFS record linkage not exposed via API.</strong> MCRISS creates the MCTFS record at accession, but the linkage between systems is not accessible via a clean API — only via batch extracts.</td>
+        <td>D1 Accessions</td>
+        <td class="sev-med">MED</td>
+        <td>STF Working Group coordinates via email and Excel.</td>
+        <td>Phase 1: Foundry ingests MCRISS batch extract alongside MCTFS. Phase 2: Work with TSO to expose MCRISS → TITAN record creation event via API. MCRC coordination required.</td>
+      </tr>
+      <tr>
+        <td><strong>TFDW historical archive (30+ years) not migrated.</strong> TFDW holds the statutory historical record for Title 10 end strength reporting. Cannot be retired without migrating data and transferring the legal reporting function.</td>
+        <td>D5 Planning / Assessment</td>
+        <td class="sev-med">MED</td>
+        <td>TFDW remains in service. TITAN reads from it as a source.</td>
+        <td>TFDW migration is a 36–48 month workstream parallel to TITAN build. JAG review required. TITAN D5 absorbs statutory reporting function in Phase 3 after legal validation.</td>
+      </tr>
+      <tr>
+        <td><strong>Training seat allocation data not real-time.</strong> MCTIMS school seat data is updated periodically but not in real time. STF pipeline visibility in D5 requires near-real-time seat status from TECOM.</td>
+        <td>D5 STF Pipeline</td>
+        <td class="sev-med">MED</td>
+        <td>MPP and TECOM coordinate via TIP spreadsheet and email.</td>
+        <td>MCTIMS data pipeline into Foundry established. TECOM coordination to expose daily seat status extract. Full real-time API in Phase 2 contingent on MCTIMS modernization timeline.</td>
+      </tr>
+      <tr>
+        <td><strong>Family / dependent data sensitivity.</strong> Family situation data (dependent school ages, spouse employment, EFMP status) is highly sensitive and subject to Privacy Act restrictions. Required for OCONUS assignment eligibility and family hardship consideration.</td>
+        <td>D3 Assignment Engine</td>
+        <td class="sev-low">LOW</td>
+        <td>Monitors ask Marines directly or check DEERS manually.</td>
+        <td>Marine self-declares in Career Portal with explicit Privacy Act notice and consent. Data stored in Marine object with field-level access control — visible only to assigned monitor and Marine themselves.</td>
+      </tr>
+      <tr>
+        <td><strong>No structured capture of monitor decision rationale.</strong> When a monitor overrides an AI recommendation, there is no structured record of why. This creates audit risk and prevents the ranking model from learning.</td>
+        <td>D3 Assignment Engine</td>
+        <td class="sev-low">LOW</td>
+        <td>N/A — no AI recommendations exist today.</td>
+        <td>Assignment action in D4 requires structured disposition field when AI rank is overridden. Free-text + dropdown reason codes. Rationale feeds model improvement loop in D5.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- PLATFORM APPLICATIONS -->
+<section id="applications">
+  <div class="section-eyebrow">Platform Extensibility</div>
+  <h2 class="section-title">14 applications that can be built on top of TITAN.</h2>
+  <p class="section-lead">TITAN is not just a system — it is a Talent Intelligence platform. The unified data model and policy-aware decision layer enables applications that are impossible today because the underlying data is fragmented across 15+ systems. Any of these can be built by Palantir, by M&amp;RA analysts and ORSAs, or by approved developers against the TITAN API layer.</p>
+
+  <div class="app-grid">
+    <div class="app-card">
+      <div class="app-num">APP 01</div>
+      <div class="app-name">Retention Risk Intelligence</div>
+      <div class="app-desc">Continuous ML model scoring every Marine's separation probability 6–12 months out. Surfaces ranked at-risk list to career counselors and monitors with explainable risk factors.</div>
+      <div class="app-users"><span class="au-tag">Career Counselors</span><span class="au-tag">Monitors</span><span class="au-tag">MPP</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 02</div>
+      <div class="app-name">Billet Marketplace</div>
+      <div class="app-name" style="font-size:11px;font-weight:400;color:#6B7280;margin-top:-4px">Marine-facing</div>
+      <div class="app-desc">Marines browse eligibility-filtered billet vacancies, submit preferences, and receive assignment confirmation with a career development rationale. Replaces the "blank contract" reenlistment experience.</div>
+      <div class="app-users"><span class="au-tag">Marines (FMF)</span><span class="au-tag">Career Counselors</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 03</div>
+      <div class="app-name">Commander's Readiness Dashboard</div>
+      <div class="app-desc">Real-time GAR from squad to Total Force. Deployable vs. non-deployable breakdown. Upcoming gain/loss curve. Retention risk by cohort. Accessible at every echelon, classification-appropriate.</div>
+      <div class="app-users"><span class="au-tag">Commanders</span><span class="au-tag">Senior Leaders</span><span class="au-tag">CMC</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 04</div>
+      <div class="app-name">Digital Board Room</div>
+      <div class="app-name" style="font-size:11px;font-weight:400;color:#6B7280;margin-top:-4px">Promotion &amp; Selection Boards</div>
+      <div class="app-desc">Board packages assembled automatically from Whole Marine Profile. PDF text extraction automated. Digital deliberation tools. Replaces DBR and eliminates the PDF-to-Word-to-DBR copy workflow cited by MMPB as their #1 complaint.</div>
+      <div class="app-users"><span class="au-tag">Board Members</span><span class="au-tag">MMPB</span><span class="au-tag">MM</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 05</div>
+      <div class="app-name">Policy Search Engine</div>
+      <div class="app-desc">Natural language search across all MCOs, MARADMINs, DoDIs, SecNavInsts, and ForOs. "What is the dwell time requirement for unaccompanied OCONUS?" returns the source paragraph. Replaces 30-year-old Notepad-format bulletin board.</div>
+      <div class="app-users"><span class="au-tag">All M&amp;RA</span><span class="au-tag">Unit S-1s</span><span class="au-tag">Marines</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 06</div>
+      <div class="app-name">FYDP Scenario Engine</div>
+      <div class="app-desc">Live "what if" modeling against real inventory. Planners model retention drops, MOS stand-ups, force structure changes across the FYDP in seconds. GAR and end-strength impacts calculated from live D1 data, not stale extracts.</div>
+      <div class="app-users"><span class="au-tag">MPP Planners</span><span class="au-tag">DC M&amp;RA</span><span class="au-tag">DC P&amp;R</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 07</div>
+      <div class="app-name">Memo-01 Generator</div>
+      <div class="app-desc">Annual retention and accession plan drafted automatically from live inventory, retention rates, and GAR requirements. Produces PMOS-level accession and retention targets, SRB recommendations, and FTAP/STAP allocations. Weeks of work become hours of analyst review.</div>
+      <div class="app-users"><span class="au-tag">MPP-20</span><span class="au-tag">MPP-30</span><span class="au-tag">RAP-2</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 08</div>
+      <div class="app-name">Admin Action Portal</div>
+      <div class="app-name" style="font-size:11px;font-weight:400;color:#6B7280;margin-top:-4px">Replaces AA Form end-to-end</div>
+      <div class="app-desc">Marines initiate any of 20+ action types digitally. Chain of command endorses via CAC. HQMC approves. Action executes in D1 automatically. Status visible to Marine throughout. Accessible from MCEN and non-MCEN. Eliminates group mailbox intake and paper routing.</div>
+      <div class="app-users"><span class="au-tag">All Marines</span><span class="au-tag">MMIB-3</span><span class="au-tag">Unit S-1s</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 09</div>
+      <div class="app-name">OccFld Health Monitor</div>
+      <div class="app-desc">Live MOS inventory vs. structure analysis by grade. Grade structure shape tool running continuously against real inventory — not a periodic snapshot. Shortfall and surplus alerts to OccFld Managers and MPP. TIP submission integrated.</div>
+      <div class="app-users"><span class="au-tag">OccFld Managers</span><span class="au-tag">MPP</span><span class="au-tag">DC CD&I</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 10</div>
+      <div class="app-name">STF Pipeline Tracker</div>
+      <div class="app-name" style="font-size:11px;font-weight:400;color:#6B7280;margin-top:-4px">Street-to-Fleet unified view</div>
+      <div class="app-desc">Recruits contracted → shipped → MCT → MOS school → graduation → assignment. All stakeholders (MCRC, TECOM, M&amp;RA) see the same pipeline. Production shortfalls surface proactively to STF Working Group.</div>
+      <div class="app-users"><span class="au-tag">MCRC</span><span class="au-tag">TECOM</span><span class="au-tag">MPP-20</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 11</div>
+      <div class="app-name">Reserve Integration Dashboard</div>
+      <div class="app-desc">AC and AR Marines in one view. AR billet advertisement for new accessions (MCRC PSRs can see openings). SMCR/IMA/AR inventory alongside AC. DR pay, ADOS tracking, and mobilization readiness unified.</div>
+      <div class="app-users"><span class="au-tag">RAM</span><span class="au-tag">Reserve Affairs</span><span class="au-tag">MCRC</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 12</div>
+      <div class="app-name">Battle Rhythm Package Generator</div>
+      <div class="app-desc">MPWG, MPB, MPEB, Three Legged Stool, and 3-Star Forum data products auto-generated on schedule from live D5 data. Standardized slide packages with current inventory, GAR tracking, and retention actuals. MPEB prep time reduced from weeks to hours.</div>
+      <div class="app-users"><span class="au-tag">MPP-11</span><span class="au-tag">Directors</span><span class="au-tag">DC M&amp;RA</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 13</div>
+      <div class="app-name">Structured Communication Log</div>
+      <div class="app-desc">A persistent, role-scoped interaction layer for career communications. Marines log notes visible to their monitor and career counselor. Counselors document counseling session outcomes and follow-up actions. Monitors log contact history. Not a replacement for ETMS or official email — a structured complement that ensures career conversations survive personnel rotations.</div>
+      <div class="app-users"><span class="au-tag">Marines</span><span class="au-tag">Career Counselors</span><span class="au-tag">Monitors</span></div>
+    </div>
+    <div class="app-card">
+      <div class="app-num">APP 14</div>
+      <div class="app-name">Policy Intelligence Engine</div>
+      <div class="app-desc">DoD directives, SecNavInsts, MCOs, MARADMINs, and Bulletins semantically indexed and surfaced at the point of decision. Natural language search across the full policy corpus. Policy changes trigger automated alerts for affected workflows and populations. Replaces the Notepad-format MARADMIN bulletin board.</div>
+      <div class="app-users"><span class="au-tag">All M&amp;RA</span><span class="au-tag">Monitors</span><span class="au-tag">Unit S-1s</span><span class="au-tag">Marines</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI -->
+<section id="roi">
+  <div class="section-eyebrow">Business Case</div>
+  <h2 class="section-title">Projected annual value: $31M+</h2>
+  <p class="section-lead">Conservative estimates based on documented workflow analysis, DoD cost benchmarks, and analogous service HR modernization outcomes. All figures assume partial realization in Year 1, scaling to full realization by Year 3. These are floor estimates — the retention impact alone could exceed the total if predictive intervention improves retention by more than 2%.</p>
+
+  <div class="roi-grid">
+    <div class="roi-card green">
+      <div class="roi-num">$4.7M</div>
+      <div class="roi-period">Annual · Monitor time savings</div>
+      <div class="roi-label">~80 monitors × 2,500 annual Marine lookups × 22 minutes saved per lookup vs. current 5-system workflow. At $65/hr fully loaded cost.</div>
+      <div class="roi-detail">Basis: Monitor workflow analysis — current 5-system lookup sequence vs. unified TITAN profile</div>
+    </div>
+    <div class="roi-card blue">
+      <div class="roi-num">$17.7M</div>
+      <div class="roi-period">Annual · Retention improvement</div>
+      <div class="roi-label">Predictive retention preventing 2% improvement in enlisted retention. ~340 additional Marines retained/year × $52,000 average cost to recruit and train a replacement.</div>
+      <div class="roi-detail">Source: DoD cost-per-accession benchmarks. Conservative — Army IPPS-A estimated 3–5% improvement.</div>
+    </div>
+    <div class="roi-card purple">
+      <div class="roi-num">$390K</div>
+      <div class="roi-period">Annual · Admin action automation</div>
+      <div class="roi-label">MMIB-3 processes ~10,000+ actions/year at ~45 min average handling time. 80% automation per section head's own estimate = 6,000 hours/year saved at $65/hr.</div>
+      <div class="roi-detail">Basis: MMIB-3 workflow analysis — approximately 10,000+ annual actions at estimated 45-min average handling time</div>
+    </div>
+    <div class="roi-card green">
+      <div class="roi-num">$650K</div>
+      <div class="roi-period">Annual · Planning document generation</div>
+      <div class="roi-label">Memo-01, monthly reconciliations, MPEB packages, and GAR analysis currently require 3–4 GS-13/14 analyst-months per cycle. TITAN reduces to analyst review hours.</div>
+      <div class="roi-detail">At $130K/year analyst cost. Conservative — does not include stakeholder coordination time across divisions.</div>
+    </div>
+    <div class="roi-card blue">
+      <div class="roi-num">$7.6M</div>
+      <div class="roi-period">Annual · PCS optimization</div>
+      <div class="roi-label">Better assignment matching reduces unnecessary PCS moves by 2%. ~40,000 PCS moves/year × 2% × $9,500 average move cost.</div>
+      <div class="roi-detail">Source: DoD average PCS cost. Improvement driven by merit-based matching reducing mis-assignments requiring early curtailment.</div>
+    </div>
+    <div class="roi-card gold">
+      <div class="roi-num">$31M+</div>
+      <div class="roi-period">Total annual floor estimate</div>
+      <div class="roi-label">Summed conservative floor. Does not include institutional knowledge preservation value, reduced MEF-level duplicate system spending, or downstream operational readiness improvements.</div>
+      <div class="roi-detail">Full realization by Year 3. Year 1 estimated at 30–40% ($9–12M) as TITAN stands up domain by domain.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="card-grid cg-2">
+    <div class="card">
+      <div class="card-title">Comparative: Peer Service HR Modernization</div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;font-size:13px">
+          <div style="padding:10px 12px;background:#F0FDF4;border-radius:8px"><strong style="color:#166534">Army IPPS-A:</strong> $1.4B over 12 years. Replaced TAPDB, SIDPERS, DTAS. Reported 3–5% retention improvement, significant reduction in manual processing. The Marine Corps benefit from Army lessons learned, smaller force, and Palantir's proven government platform.</div>
+          <div style="padding:10px 12px;background:#EFF6FF;border-radius:8px"><strong style="color:#1E40AF">Navy HR Transformation:</strong> Ongoing. Fragmented across multiple programs. The Marine Corps has the advantage of a more unified command structure and the ability to execute as a single program of record.</div>
+          <div style="padding:10px 12px;background:#F5F3FF;border-radius:8px"><strong style="color:#4C1D95">Palantir TITAN:</strong> Estimated $150–250M program cost over 5 years (including hardware, licenses, implementation, and transition). ROI positive by Year 3 at conservative savings estimates. Significantly cheaper than IPPS-A due to Foundry's existing government deployment history and ATO pathways.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Unquantified Strategic Value</div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;font-size:13px;color:#4B5568">
+          <div style="padding-left:10px;border-left:2px solid #C8A951"><strong style="color:#0A1628">Institutional knowledge preservation.</strong> Every decision, rationale, and action has a structured digital record. The "survive year one, learn year two, rotate" cycle is broken. Value is immense but not easily monetized.</div>
+          <div style="padding-left:10px;border-left:2px solid #C8A951"><strong style="color:#0A1628">Eliminated MEF-level duplicate spending.</strong> Every MEF independently contracts workarounds for problems TITAN solves enterprise-wide. This distributed, invisible spending stops.</div>
+          <div style="padding-left:10px;border-left:2px solid #C8A951"><strong style="color:#0A1628">Recruiting advantage.</strong> Marines making reenlistment decisions compare the Corps against civilian employers who show them salary, role, location, and benefits upfront. TITAN closes that information gap.</div>
+          <div style="padding-left:10px;border-left:2px solid #C8A951"><strong style="color:#0A1628">Combat readiness.</strong> The ultimate metric. Better-matched Marines, in better-suited billets, with more stable assignments and higher retention = more ready force. Not monetizable, but the reason everything else matters.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="section-eyebrow">Implementation</div>
+  <h2 class="section-title">Four phases. Five years. A six-month pilot that earns every subsequent commitment.</h2>
+  <p class="section-lead">TITAN is built incrementally — each phase delivers measurable capability before the next begins. The first six months are an iterative pilot: two structured sprints with a formal feedback and course-correction review between them. No phase requires MCTFS disruption. The no-fail missions continue uninterrupted throughout.</p>
+
+  <div class="roadmap">
+    <div class="rm-phase">
+      <div class="rm-phase-num">1</div>
+      <div class="rm-phase-title">Foundation</div>
+      <div class="rm-phase-time">Months 0–6 (Iterative Pilot)</div>
+      <div class="rm-items">
+        <div class="rm-item"><strong>Sprint 1 (Mo 1–3):</strong> Foundry read pipeline from MCTFS established; data quality baseline documented</div>
+        <div class="rm-item"><strong>Quick wins (Mo 2–3):</strong> MMIB-3 intake automation + one MPP planning report; governance structure stood up under DC M&amp;RA</div>
+        <div class="rm-item"><strong>Mid-pilot review (Mo 3):</strong> Structured feedback from monitors, planners, and M&amp;RA leadership; priorities adjusted</div>
+        <div class="rm-item"><strong>Sprint 2 (Mo 4–6):</strong> Whole Marine Profile MVP (one MOS community); Monitor Workspace alpha (one MMEA section)</div>
+        <div class="rm-item"><strong>Pilot close (Mo 6):</strong> Four pilot artifacts delivered; Phase 2 decision gate</div>
+      </div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-phase-num">2</div>
+      <div class="rm-phase-title">Core Platform</div>
+      <div class="rm-phase-time">Months 6–18</div>
+      <div class="rm-items">
+        <div class="rm-item">All 5 data pipelines live (MCTFS, TFSMS, TFRS, ORMA, MCRISS)</div>
+        <div class="rm-item">Full ontology deployed — all 10 core objects</div>
+        <div class="rm-item">Monitor Workspace enterprise rollout (MMEA + MMOA)</div>
+        <div class="rm-item">Marine Career Portal launched on NIPR</div>
+        <div class="rm-item">Admin Action Portal (D4) replaces AA form for top 5 action types</div>
+        <div class="rm-item">D5 readiness dashboard live at MEF level</div>
+        <div class="rm-item">FYDP scenario engine operational for MPP</div>
+      </div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-phase-num">3</div>
+      <div class="rm-phase-title">MCTFS Transition</div>
+      <div class="rm-phase-time">Months 18–36</div>
+      <div class="rm-items">
+        <div class="rm-item">TITAN absorbs MCTFS write functions domain by domain</div>
+        <div class="rm-item">3270 terminal retired</div>
+        <div class="rm-item">WebMASS retired — D4 handles all PCS order workflow</div>
+        <div class="rm-item">Reserve component fully integrated — Drill Manager retired</div>
+        <div class="rm-item">Memo-01 auto-generation in production</div>
+        <div class="rm-item">Battle rhythm packages automated for all HRDP forums</div>
+        <div class="rm-item">TFDW migration begins (legal review complete)</div>
+      </div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-phase-num">4</div>
+      <div class="rm-phase-title">Full Capability</div>
+      <div class="rm-phase-time">Months 36–60</div>
+      <div class="rm-items">
+        <div class="rm-item">MCTFS decommissioned — TITAN is system of record</div>
+        <div class="rm-item">TFDW statutory reporting transferred to TITAN D5</div>
+        <div class="rm-item">AI assignment ranking enterprise-wide</div>
+        <div class="rm-item">Predictive retention model at full fidelity</div>
+        <div class="rm-item">All 12 platform applications operational</div>
+        <div class="rm-item">TITAN API available to approved third-party developers</div>
+        <div class="rm-item">FY27 program of record established</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box mt24">
+    <strong>6-Month Pilot decision gate:</strong> The iterative pilot under COA 3 (DC-directed) produces four artifacts before any further commitment: (1) data quality baseline documenting MCTFS field-level discrepancies, (2) at least two working automation products with measurable time savings, (3) Whole Marine Profile for a single MOS community validated by working monitors, and (4) a refined cost and timeline estimate for Phases 2–4 based on actual integration complexity. Two structured iteration reviews are built into the six months — no "set and forget." Phase 2 funding is contingent on Phase 1 artifacts.
+  </div>
+</section>
+
+<!-- GUIDING PRINCIPLES -->
+<section id="principles">
+  <div class="section-eyebrow">Design Governance</div>
+  <h2 class="section-title">TITAN is bound by HRDP Talent Management principles and DoD AI Ethics.</h2>
+  <p class="section-lead">These are not aspirations — they are binding design constraints. MCO 5250.1 provides the HRDP talent management principles. DoD AI Ethics (Responsible, Equitable, Traceable, Reliable, Governable) govern all AI-assisted functions. Every TITAN feature decision is evaluated against both sets. If a capability violates a principle, it does not ship.</p>
+
+  <div class="principle-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="principle">
+      <div class="principle-title">Performance in combat, first.</div>
+      <div class="principle-body">Every ranking factor, every data field, every decision support tool is evaluated against whether it improves the Marine Corps' ability to generate combat-ready forces. Efficiency gains that don't serve readiness are secondary.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-title">Align aptitudes to warfighting requirements.</div>
+      <div class="principle-body">The assignment engine ranks Marines against billet requirements — not seniority or submission timestamps. TITAN makes merit-based assignment operationally feasible, not just theoretically desirable.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-title">Maximize transparency.</div>
+      <div class="principle-body">Marines see their own profile, available billets, package status, and career trajectory. This is not a feature — it is a CMC mandate. The Marine Career Portal exists because this principle requires it.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-title">Eliminate unnecessary conflict.</div>
+      <div class="principle-body">The assignment engine surfaces family situation flags (EFMP, dependent school age, assignment history) so monitors can avoid forcing career-vs-family ultimatums where alternatives exist.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-title">Enabled by tools — not gatekept by them.</div>
+      <div class="principle-body">Analytics and decision support in the hands of commanders, monitors, Marines, and ORSAs — not just analysts behind SAAR queues. Expanding the analytical population is itself a readiness multiplier.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-title">Ears open.</div>
+      <div class="principle-body">The organizational assessment that grounded this concept is the beginning. TITAN development incorporates monitor, Marine, and commander feedback at every phase gate — structured into the six-month pilot cadence. No feature ships without field validation.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-title">AI that is traceable, governable, equitable.</div>
+      <div class="principle-body">DoD AI Ethics principles govern all AI-assisted functions: Responsible, Equitable, Traceable, Reliable, Governable. Every AI recommendation includes an explanation. Monitors can override with structured rationale. No model ships without bias audit. Human accountability is preserved at every Tier 1 decision.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEMS REPLACED -->
+<section id="replacements">
+  <div class="section-eyebrow">Legacy Landscape</div>
+  <h2 class="section-title">What TITAN retires vs. what it interfaces.</h2>
+  <p class="section-lead">The distinction is critical. Systems are retired when the Marine Corps has the authority, data ownership, and mission ownership to absorb them. Systems are interfaced when the Marine Corps is a tenant in DoD-level architecture.</p>
+
+  <div class="card-grid cg-2">
+    <div class="card" style="border-top:3px solid #DC2626">
+      <div class="card-title" style="color:#DC2626">Retired or Absorbed (13+ legacy systems)</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:13px">
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#EFF6FF;border-radius:6px;border:1px solid #BFDBFE"><span style="font-weight:600">MCTFS</span><span style="color:#1D4ED8">Read pipeline (Phase 1); long-term absorption path to be determined</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">3270 Terminal</span><span style="color:#6B7280">Mainframe interface → D1 UI</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">TFSMS</span><span style="color:#6B7280">Force structure → D2</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">WebMASS</span><span style="color:#6B7280">PCS orders → D4</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">TFRS</span><span style="color:#6B7280">Retention system → D3</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">ORMA / JEPES</span><span style="color:#6B7280">Evaluations → D3 Performance Record</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">MOL (self-service)</span><span style="color:#6B7280">Portal → D3 Marine Career Portal</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">DBR (Digital Board Room)</span><span style="color:#6B7280">Boards → D4 Board Management</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">ETMS-2</span><span style="color:#6B7280">Task routing → D4 Action Portal</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">Cognos</span><span style="color:#6B7280">Legacy reporting → D5 live queries</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">Drill Manager</span><span style="color:#6B7280">Reserve component → D1/D2 unified</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">MARADMIN Bulletin Board</span><span style="color:#6B7280">Notepad format → D4 Policy module</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#FEF2F2;border-radius:6px"><span style="font-weight:600">Hundreds of Excel/SharePoint trackers</span><span style="color:#6B7280">Division workarounds → live D5 data</span></div>
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid #EA580C">
+      <div class="card-title" style="color:#EA580C">Interfaced — DoD-level or external authority (not replaced)</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:13px">
+        <div style="padding:10px 12px;background:#FFF7ED;border-radius:6px"><strong>DCPS / DJMS</strong> — Defense Joint Military Pay System. DoD-owned pay disbursement. TITAN feeds DCPS, does not replace it. The Marine Corps is a tenant.</div>
+        <div style="padding:10px 12px;background:#FFF7ED;border-radius:6px"><strong>DEERS / RAPIDS</strong> — DoD identity and dependent management. TITAN reads DEERS for identity verification and dependent data. DoD-level system.</div>
+        <div style="padding:10px 12px;background:#FFF7ED;border-radius:6px"><strong>MCRISS</strong> — Accessions system of record. Creates the Marine's initial record. Phase 1: MCRISS triggers record creation in TITAN. Phase 2+ evaluate full absorption. MCRC coordination required.</div>
+        <div style="padding:10px 12px;background:#FFF7ED;border-radius:6px"><strong>Advana / Jupiter</strong> — DoD-wide analytics platform. TITAN becomes a data source for Advana, not a replacement. Advana continues for cross-service analytics.</div>
+        <div style="padding:10px 12px;background:#FFF7ED;border-radius:6px"><strong>MCTIMS</strong> — TECOM's training management system. TITAN D5 ingests MCTIMS data for STF pipeline visibility. TECOM retains MCTIMS ownership. Data flows in; system ownership does not transfer.</div>
+        <div style="padding:10px 12px;background:#FFF7ED;border-radius:6px"><strong>TFDW</strong> — Total Force Data Warehouse. Statutory Title 10 reporting system. 30+ year historical archive. Interfaced in Phases 1–2; absorbed in Phase 3–4 after legal validation and JAG review.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+    <div>
+      <div style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;margin-bottom:4px">TITAN — Talent Intelligence and Assignment Network</div>
+      <div>Concept Document v0.2 · Palantir × USMC M&amp;RA · Prepared by M&amp;RA (MPP) in coordination with Palantir Technologies</div>
+    </div>
+    <div style="text-align:right">
+      <div style="color:rgba(255,255,255,0.6);margin-bottom:2px">UNCLASSIFIED // FOR OFFICIAL USE ONLY</div>
+      <div>MCO 5250.1 (HRDP) Compliant · IL5 (CUI) / IL6 (Secret) Architecture · Palantir Foundry + AIP</div>
+    </div>
+  </div>
+</footer>
+
+</div><!-- end #main -->
+
+<script>
+// Nav highlight on scroll
+const sections = document.querySelectorAll('section[id], div[id="hero"]');
+const navLinks = document.querySelectorAll('#sidebar nav a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('#sidebar nav a[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// Persona tabs
+function showPersona(id, btn) {
+  document.querySelectorAll('.persona-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
